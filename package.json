@@ -9,7 +9,7 @@
 		"preview": "vite preview",
 		"build-only": "vite build",
 		"type-check": "vue-tsc --build --force",
-		"lint": "eslint . --ext .vue,.js,.cjs,.mjs,.ts, --fix --max-warnings 0",
+		"lint": "eslint . --ext .vue,.ts, --fix --max-warnings 0",
 		"format": "prettier --write src/"
 	},
 	"dependencies": {

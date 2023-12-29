@@ -5,8 +5,8 @@ module.exports = {
 	root: true,
 
 	extends: [
-		'plugin:vue/vue3-recommended',
 		'eslint:recommended',
+		'plugin:vue/vue3-recommended',
 		'@vue/eslint-config-typescript',
 		'plugin:tailwindcss/recommended',
 		'plugin:sonarjs/recommended',
@@ -30,6 +30,7 @@ module.exports = {
 		'no-implicit-coercion': 'error',
 		'require-await': 'error',
 		'no-void': 'off',
+		'no-console': 'warn',
 		'no-use-before-define': [
 			'error',
 			{

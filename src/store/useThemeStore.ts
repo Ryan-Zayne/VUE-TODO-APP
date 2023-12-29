@@ -1,0 +1,31 @@
+import { useState } from '@/lib/hooks/useState';
+import { defineStore, storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
+const themeStoreFn = defineStore('theme', () => {
+	const [theme, setTheme] = useState(document.documentElement.dataset.theme);
+	const isDarkMode = computed(() => theme.value === 'dark');
+
+	const toggleTheme = () => {
+		const newTheme = theme.value === 'light' ? 'dark' : 'light';
+
+		document.documentElement.dataset.theme = newTheme;
+
+		setTheme(newTheme);
+
+		localStorage.setItem('theme', newTheme);
+	};
+
+	return {
+		theme,
+		isDarkMode,
+
+		actions: {
+			toggleTheme,
+		},
+	};
+});
+
+export const useThemeStore = () => storeToRefs(themeStoreFn());
+
+export const useThemeActions = () => themeStoreFn().actions;

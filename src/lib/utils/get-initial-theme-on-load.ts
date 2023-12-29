@@ -1,18 +1,6 @@
 import { prefersDarkMode } from './constants';
-import { parseJSON } from './parseJson';
 
-type ThemeState = {
-	state: { theme: 'dark' | 'light' };
-};
+export const defaultSystemTheme = prefersDarkMode ? 'dark' : 'light';
 
-const defaultSystemPreference: ThemeState = {
-	state: { theme: prefersDarkMode ? 'dark' : 'light' },
-};
-
-const getInitialThemeOnLoad = () => {
-	const themeStateInStorage = parseJSON<ThemeState>(localStorage.getItem('colorScheme'));
-
-	return (themeStateInStorage ?? defaultSystemPreference).state.theme;
-};
-
-export { getInitialThemeOnLoad };
+export const getInitialThemeOnLoad = (storageKey: string = 'theme') =>
+	localStorage.getItem(storageKey) ?? defaultSystemTheme;

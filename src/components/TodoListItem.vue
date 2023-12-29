@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type { TodoStoreType } from '@/App.vue';
+import { useTodoActions, type TodoStoreType } from '@/store/useTodoStore';
 
-const props = defineProps<{
-	todoItem: TodoStoreType['todoList'][number];
-}>();
+const props = defineProps<{ todoItem: TodoStoreType['todoList'][number] }>();
 
-const emit = defineEmits<{
-	onButtonClick: [];
-	onCheckBoxToggle: [];
-}>();
+const { handleDeleteTodo, handleDoneTodo } = useTodoActions();
 
 const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 </script>
@@ -19,18 +14,18 @@ const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 			:id="todoCheckBoxId"
 			type="checkbox"
 			class="custom-checkbox [border:2px_solid_var(--border-primary)]"
-			@input="emit('onCheckBoxToggle')"
+			@input="handleDoneTodo(todoItem.id)"
 		/>
 
 		<label :for="todoCheckBoxId" :class="[todoItem.isDone && 'line-through']">
-			{{ todoItem.todoValue }}
+			{{ todoItem.todoInputValue }}
 		</label>
 
 		<button
 			class="ml-auto transition-transform duration-[50ms] ease-in-out active:scale-[1.2]"
-			@click="emit('onButtonClick')"
+			@click="handleDeleteTodo(todoItem.id)"
 		>
-			<img class="" src="/src/assets/x-icon.svg" alt="" />
+			<img class="aspect-square w-[1.4rem]" src="/src/assets/x-icon.svg" alt="" />
 		</button>
 	</li>
 </template>

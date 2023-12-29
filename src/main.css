@@ -7,7 +7,7 @@
 		--main-theme: hsl(0, 0%, 100%);
 		--color-body: var(--main-theme);
 		--border-primary: hsl(236, 32%, 85%);
-		--shadow: hsl(237, 20%, 80%);
+		--shadow: hsl(237, 20%, 60%);
 		--text-primary: hsl(235, 19%, 35%);
 		--text-secondary: hsl(235, 9%, 61%);
 		--text-blue: hsl(220, 98%, 61%);
