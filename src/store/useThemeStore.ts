@@ -1,4 +1,5 @@
-import { useState } from '@/lib/hooks/useState';
+import { useState } from '@/hooks/useState';
+import { syncStateWithStorage } from '@/utils/syncStateWithStorage';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
@@ -13,19 +14,19 @@ const themeStoreFn = defineStore('theme', () => {
 
 		setTheme(newTheme);
 
-		localStorage.setItem('theme', newTheme);
+		syncStateWithStorage('theme', newTheme);
 	};
 
 	return {
 		theme,
 		isDarkMode,
 
-		actions: {
+		actions: () => ({
 			toggleTheme,
-		},
+		}),
 	};
 });
 
 export const useThemeStore = () => storeToRefs(themeStoreFn());
 
-export const useThemeActions = () => themeStoreFn().actions;
+export const useThemeActions = () => themeStoreFn().actions();

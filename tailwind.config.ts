@@ -14,14 +14,24 @@ const tailwindConfig = {
 		},
 
 		backgroundImage: {
-			'hero-image-light': `
+			'hero-light': `
 						linear-gradient(225deg, hsl(217, 100%, 67%) 0%, hsl(280, 83%, 55%) 100%),
 						url('/src/assets/hero-light.svg')
 			`,
 
-			'hero-image-dark': `
+			'hero-light-desktop': `
+						linear-gradient(225deg, hsl(217, 100%, 67%) 0%, hsl(280, 83%, 55%) 100%),
+						url('/src/assets/hero-light-desktop.svg')
+			`,
+
+			'hero-dark': `
 					linear-gradient(135deg, hsl(254, 85%, 40%) 0%, hsl(307, 64%, 39%) 100%),
 					url('/src/assets/hero-dark.svg')
+			`,
+
+			'hero-dark-desktop': `
+					linear-gradient(135deg, hsl(254, 85%, 40%) 0%, hsl(307, 64%, 39%) 100%),
+					url('/src/assets/hero-dark-desktop.svg')
 			`,
 		},
 
@@ -42,7 +52,7 @@ const tailwindConfig = {
 		plugin((pluginApi) => {
 			const { addComponents } = pluginApi;
 
-			addComponents({
+			const components = {
 				'.custom-checkbox': {
 					'input[type="checkbox"]&': {
 						appearance: 'none',
@@ -53,15 +63,19 @@ const tailwindConfig = {
 					justifyContent: 'center',
 					alignItems: 'center',
 					aspectRatio: '1',
-					width: '2rem',
 					borderRadius: '50%',
+					backgroundImage: 'url("/src/assets/circle.svg")',
+					backgroundSize: 'contain',
+
+					'&:hover': {
+						backgroundImage: 'url("/src/assets/circle-hover.svg")',
+					},
 
 					'&::before': {
 						content: '""',
 						backgroundImage: 'url("/src/assets/tick-icon.svg")',
 						backgroundSize: 'contain',
 						aspectRatio: '1',
-						width: '2rem',
 						borderRadius: '50%',
 						transform: 'scale(0)',
 						transition: '150ms transform ease-in-out',
@@ -71,7 +85,9 @@ const tailwindConfig = {
 						transform: 'scale(1)',
 					},
 				},
-			});
+			};
+
+			addComponents(components);
 		}),
 	],
 } satisfies Config;

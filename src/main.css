@@ -45,13 +45,20 @@
 	/* Basic style resets */
 	/* ------------------------- */
 	html {
+		height: 100%;
+	}
+
+	body {
+		min-height: 100%;
+	}
+
+	html {
 		font-size: 62.5%;
 		scroll-behavior: smooth;
 	}
 
-	:where(html.theme-transition *) {
-		transition: background-color 500ms ease-in-out;
-	}
+
+
 
 	input:focus-visible {
 		outline: 2px solid transparent;
@@ -66,6 +73,10 @@
 
 	button {
 		outline: transparent;
+	}
+
+	:where(html.theme-transition *) {
+		transition: background-color 500ms ease-in-out;
 	}
 
 	body {
