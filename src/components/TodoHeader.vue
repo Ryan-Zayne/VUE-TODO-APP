@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import moonIcon from '@/assets/moon.svg';
+import sunIcon from '@/assets/sun.svg';
 import { useThemeActions, useThemeStore } from '@/store/useThemeStore';
 
 const { isDarkMode } = useThemeStore();
@@ -18,7 +20,7 @@ const { toggleTheme } = useThemeActions();
 
 			<button @click="toggleTheme">
 				<img
-					src="/src/assets/sun.svg"
+					:src="isDarkMode ? sunIcon : moonIcon"
 					class="aspect-square w-[2rem] md:w-[2.6rem]"
 					fetchpriority="high"
 					alt=""
