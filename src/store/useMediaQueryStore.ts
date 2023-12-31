@@ -1,4 +1,4 @@
-import { useState } from '@/hooks/useState';
+import { useState } from '@/composables/useState';
 import { desktopQuery, mobileQuery, tabletQuery } from '@/utils/constants';
 import { defineStore, storeToRefs } from 'pinia';
 

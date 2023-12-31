@@ -1,4 +1,4 @@
-import { useState } from '@/hooks/useState';
+import { useState } from '@/composables/useState';
 import { syncStateWithStorage } from '@/utils/syncStateWithStorage';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed } from 'vue';

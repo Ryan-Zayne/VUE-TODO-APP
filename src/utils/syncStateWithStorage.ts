@@ -3,22 +3,23 @@ import { isArray, isObject } from './typeof';
 
 type SyncStorageParams =
 	| [key: string, state: string]
-	| [key: string, state: Record<string, unknown>]
-	| [key: string, state: Record<string, unknown>, selectedKeys: string[]];
+	| [key: string, state: Record<string, unknown> | unknown[]]
+	| [key: string, state: Record<string, unknown>, keysToSelect: string[]];
 
-function syncStateWithStorage<TKey extends string, TString extends string>(
-	...params: [key: TKey, state: TString]
+function syncStateWithStorage<TKey extends string, TStringState extends string>(
+	...params: [key: TKey, state: TStringState]
 ): void;
 
-function syncStateWithStorage<TKey extends string, TObject extends Record<string, unknown>>(
-	...params: [key: TKey, state: TObject]
-): void;
+function syncStateWithStorage<
+	TKey extends string,
+	TCompositeState extends Record<string, unknown> | unknown[],
+>(...params: [key: TKey, state: TCompositeState]): void;
 
 function syncStateWithStorage<
 	TKey extends string,
 	TObject extends Record<string, unknown>,
 	const TPickArray extends Array<keyof TObject>,
->(...params: [key: TKey, state: TObject, selectedKeys: TPickArray]): void;
+>(...params: [key: TKey, state: TObject, keysToSelect: TPickArray]): void;
 
 // Overload Implementation
 function syncStateWithStorage(...params: SyncStorageParams): void {
