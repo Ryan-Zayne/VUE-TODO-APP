@@ -20,9 +20,12 @@
 	"plugins": ["tailwindcss", "unicorn"],
 
 	"parserOptions": {
-		"ecmaVersion": "latest"
+		"ecmaVersion": "latest",
+		"sourceType": "module"
 	},
+
 	"rules": {
+		// Base Eslint Rules
 		"max-len": "off",
 		"indent": "off",
 		"no-tabs": "off",
@@ -41,6 +44,28 @@
 		"no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
 		"no-unused-expressions": "off",
 		"no-return-await": "off",
+
+		// Vue Rules
+		"vue/attribute-hyphenation": ["error", "never"],
+		"vue/v-on-event-hyphenation": ["error", "never"],
+
+		// Vue Airbnb Rules
+		"import/no-extraneous-dependencies": [
+			"error",
+			{
+				"devDependencies": true
+			}
+		],
+		"import/prefer-default-export": "off",
+		"import/no-cycle": [
+			"error",
+			{
+				"ignoreExternal": true,
+				"maxDepth": 3
+			}
+		],
+
+		// Unicorn Rules
 		"unicorn/no-null": "off",
 		"unicorn/filename-case": [
 			"warn",
@@ -53,11 +78,13 @@
 		"unicorn/no-array-reduce": "off",
 		"unicorn/no-array-for-each": "off",
 		"unicorn/no-useless-undefined": ["error", { "checkArguments": true }],
+
+		// SonarJS Rules
 		"sonarjs/prefer-immediate-return": "off",
+
+		// TailwindCSS Rules
 		"tailwindcss/no-custom-classname": "off",
 		"tailwindcss/no-contradicting-classname": "off",
-		"tailwindcss/classnames-order": ["warn", { "config": "./tailwind.config.ts" }],
-		"vue/attribute-hyphenation": ["error", "never"],
-		"vue/v-on-event-hyphenation": ["error", "never"]
+		"tailwindcss/classnames-order": ["warn", { "config": "./tailwind.config.ts" }]
 	}
 }
