@@ -2,9 +2,9 @@ import { pickKeys } from './pickKeys';
 import { isObject } from './typeof';
 
 function syncStateWithStorage<TKey extends string>(storageKey: TKey, state: string): void;
-function syncStateWithStorage<TKey extends string>(
+function syncStateWithStorage<TKey extends string, TState extends Record<string, unknown>>(
 	storageKey: TKey,
-	state: Record<string, unknown>
+	state: TState
 ): void;
 function syncStateWithStorage<
 	TKey extends string,
@@ -36,5 +36,7 @@ function syncStateWithStorage(
 		}
 	}
 }
+
+syncStateWithStorage('key', { breakfast: 'waffles' });
 
 export { syncStateWithStorage };
