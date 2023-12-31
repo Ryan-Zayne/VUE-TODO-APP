@@ -18,7 +18,7 @@ const { toggleTheme } = useThemeActions();
 
 			<button @click="toggleTheme">
 				<img
-					:src="isDarkMode ? '/src/assets/sun.svg' : '/src/assets/moon.svg'"
+					src="/src/assets/sun.svg"
 					class="aspect-square w-[2rem] md:w-[2.6rem]"
 					fetchpriority="high"
 					alt=""
