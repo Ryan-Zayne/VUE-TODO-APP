@@ -1,22 +1,27 @@
 import { pickKeys } from './pickKeys';
 import { isObject } from './typeof';
 
-type StorageSyncParams<
-	TKey extends string,
-	TState extends Record<string, unknown>,
-	TPickArray extends Array<keyof TState>,
-> =
-	| [key: TKey, state: string]
-	| [key: TKey, state: TState]
-	| [key: TKey, state: TState, keysToOmit: TPickArray];
+type SyncStorageParams =
+	| [key: string, state: string]
+	| [key: string, state: Record<string, unknown>]
+	| [key: string, state: Record<string, unknown>, selectedKeys: string[]];
 
-const syncStateWithStorage = <
+function syncStateWithStorage<TKey extends string, TString extends string>(
+	...params: [key: TKey, state: TString]
+): void;
+
+function syncStateWithStorage<TKey extends string, TObject extends Record<string, unknown>>(
+	...params: [key: TKey, state: TObject]
+): void;
+
+function syncStateWithStorage<
 	TKey extends string,
-	const TState extends Record<string, unknown>,
-	TPickArray extends Array<keyof TState>,
->(
-	...params: StorageSyncParams<TKey, TState, TPickArray>
-) => {
+	TObject extends Record<string, unknown>,
+	const TPickArray extends Array<keyof TObject>,
+>(...params: [key: TKey, state: TObject, selectedKeys: TPickArray]): void;
+
+// Overload Implementation
+function syncStateWithStorage(...params: SyncStorageParams): void {
 	const [storageKey, state, keysToOmit] = params;
 
 	switch (true) {
@@ -36,6 +41,6 @@ const syncStateWithStorage = <
 			localStorage.setItem(storageKey, state);
 		}
 	}
-};
+}
 
 export { syncStateWithStorage };

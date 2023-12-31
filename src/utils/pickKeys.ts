@@ -1,19 +1,17 @@
 const pickKeys = <
-	const TObject extends Record<string, unknown>,
+	TObject extends Record<string, unknown>,
 	const TPickArray extends Array<keyof TObject>,
 >(
 	initialObject: TObject,
-	keysToOmit: TPickArray
+	keysToPick: TPickArray
 ) => {
-	const arrayFromFilteredObject = Object.entries(initialObject).filter(([key]) =>
-		keysToOmit.includes(key)
-	);
+	const arrayFromInitObject = Object.entries(initialObject);
 
-	const updatedObject = Object.fromEntries(arrayFromFilteredObject);
+	const filteredArray = arrayFromInitObject.filter(([objectKey]) => keysToPick.includes(objectKey));
 
-	return updatedObject as {
-		[Key in Extract<keyof TObject, TPickArray[number]>]: TObject[Key];
-	};
+	const updatedObject = Object.fromEntries(filteredArray);
+
+	return updatedObject as { [Key in Extract<keyof TObject, TPickArray[number]>]: TObject[Key] };
 };
 
 export { pickKeys };
