@@ -1,3 +1,5 @@
-export const isObject = (obj: unknown): obj is Record<string, unknown> => {
-	return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
+export const isObject = (value: unknown): value is Record<string, unknown> => {
+	return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
+
+export const isArray = (value: unknown): value is unknown[] => Array.isArray(value);

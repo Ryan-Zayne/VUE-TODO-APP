@@ -2,9 +2,9 @@
 import { useMediaQueryStore } from '@/store/useMediaQueryStore';
 import { useTodoActions, useTodoStore } from '@/store/useTodoStore';
 
-const { todoInput, todoStore, totalIncompleteTodos, todoListfilter } = useTodoStore();
+const { todoInput, todoStore, totalIncompleteTodos, filterdTodoList } = useTodoStore();
 
-const { handleAddTodo, handleClearCompleteTodos, handleTodosFilter } = useTodoActions();
+const { handleAddTodo, handleClearCompleteTodos, setTodoListFilter } = useTodoActions();
 
 const { isMobile } = useMediaQueryStore();
 </script>
@@ -17,7 +17,8 @@ const { isMobile } = useMediaQueryStore();
 			<div
 				class="flex w-full items-center gap-[1.2rem] rounded-[6px] bg-main-theme px-[2.1rem] [box-shadow:0px_35px_50px_-15px_var(--shadow)] md:gap-[2.4rem]"
 			>
-				<span
+				<label
+					for="todoInput"
 					class="inline-block aspect-square w-[2rem] shrink-0 rounded-full [border:1.1px_solid_var(--border-primary)] md:w-[2.4rem]"
 				/>
 
@@ -33,7 +34,10 @@ const { isMobile } = useMediaQueryStore();
 
 		<ul
 			:class="[
-				'flex min-h-[31rem] w-full flex-col rounded-[6px] bg-main-theme text-primary [box-shadow:0px_3px_50px_0px_var(--shadow)] [&_>_li:not(:last-child)]:[border-bottom:2px_solid_var(--border-primary)]',
+				`flex min-h-[31rem] w-full flex-col rounded-[6px] bg-main-theme text-primary
+				[box-shadow:0px_3px_50px_0px_var(--shadow)]
+				[&_>_li:not(:last-child)]:[border-bottom:2px_solid_var(--border-primary)]
+				`,
 
 				todoStore.todoList.length <= 3 &&
 					'[&_>_li:last-child]:[border-top:2px_solid_var(--border-primary)]',
@@ -51,6 +55,7 @@ const { isMobile } = useMediaQueryStore();
 				</p>
 
 				<button
+					type="button"
 					class="select-none transition-[transform,color] duration-[120ms] ease-in-out hover:text-primary active:scale-[1.06]"
 					@click="handleClearCompleteTodos"
 				>
@@ -68,31 +73,35 @@ const { isMobile } = useMediaQueryStore();
 			</p>
 
 			<button
-				:data-selected="todoListfilter === 'all'"
+				type="button"
+				:data-selected="filterdTodoList === 'all'"
 				class="hover:text-primary [&[data-selected=true]]:text-[--text-blue]"
-				@click="handleTodosFilter('all')"
+				@click="setTodoListFilter('all')"
 			>
 				All
 			</button>
 
 			<button
-				:data-selected="todoListfilter === 'active'"
+				type="button"
+				:data-selected="filterdTodoList === 'active'"
 				class="hover:text-primary [&[data-selected=true]]:text-[--text-blue]"
-				@click="handleTodosFilter('active')"
+				@click="setTodoListFilter('active')"
 			>
 				Active
 			</button>
 
 			<button
-				:data-selected="todoListfilter === 'completed'"
+				type="button"
+				:data-selected="filterdTodoList === 'completed'"
 				class="hover:text-primary [&[data-selected=true]]:text-[--text-blue]"
-				@click="handleTodosFilter('completed')"
+				@click="setTodoListFilter('completed')"
 			>
 				Completed
 			</button>
 
 			<button
 				v-if="!isMobile"
+				type="button"
 				class="ml-auto select-none text-secondary transition-[transform,color] duration-[120ms] ease-in-out hover:text-primary active:scale-[1.06]"
 				@click="handleClearCompleteTodos"
 			>

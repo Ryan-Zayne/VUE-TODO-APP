@@ -1,5 +1,7 @@
 import { parseJSON } from '@/utils/parseJson';
-import { TODO_STORAGE_KEY, type TodoStoreType } from './useTodoStore';
+import type { TodoStoreType } from './todoStore.types';
+
+export const TODO_STORAGE_KEY = 'todoState';
 
 export const defaultTodoState: TodoStoreType = {
 	todoList: [],

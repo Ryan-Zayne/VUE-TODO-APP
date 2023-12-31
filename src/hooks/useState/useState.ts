@@ -8,7 +8,7 @@ import type {
 	UseStateOptions,
 	UseStateReturnType,
 	WritableState,
-} from './useState.types';
+} from './state.types';
 
 function useState<TValue>(
 	initialState: TValue,

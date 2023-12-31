@@ -25,6 +25,7 @@ const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 		</label>
 
 		<button
+			type="button"
 			class="ml-auto transition-transform duration-[50ms] ease-in-out active:scale-[1.2]"
 			@click="handleDeleteTodo(todoItem.id)"
 		>

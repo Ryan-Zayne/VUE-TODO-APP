@@ -1,5 +1,5 @@
 import { pickKeys } from './pickKeys';
-import { isObject } from './typeof';
+import { isArray, isObject } from './typeof';
 
 type SyncStorageParams =
 	| [key: string, state: string]
@@ -32,7 +32,7 @@ function syncStateWithStorage(...params: SyncStorageParams): void {
 			break;
 		}
 
-		case isObject(state): {
+		case isObject(state) || isArray(state): {
 			localStorage.setItem(storageKey, JSON.stringify(state));
 			break;
 		}

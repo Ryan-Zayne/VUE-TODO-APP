@@ -2,29 +2,17 @@ import { useState } from '@/hooks/useState';
 import { syncStateWithStorage } from '@/utils/syncStateWithStorage';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { defaultTodoState, initialStoredState } from './useTodoStore.utils';
-
-export type TodoStoreType = {
-	todoList: Array<{
-		id: string;
-		todoInputValue: string;
-		isDone: boolean;
-	}>;
-
-	isEditMode: boolean;
-};
-
-export const TODO_STORAGE_KEY = 'todoState';
+import { TODO_STORAGE_KEY, defaultTodoState, initialStoredState } from './todoStore.utils';
 
 const todoStoreFn = defineStore('todoStore', () => {
 	const [todoInput, setTodoInput] = useState('', { needsDoubleBinding: true });
 	const [todoStore, setTodoStore] = useState(initialStoredState ?? defaultTodoState);
-	const [todoListfilter, setTodoListfilter] = useState<'all' | 'active' | 'completed'>('all');
+	const [filterdTodoList, setTodoListFilter] = useState<'all' | 'active' | 'completed'>('all');
 
 	const filteredTodosList = computed(() => {
 		const { todoList } = todoStore.value;
 
-		switch (todoListfilter.value) {
+		switch (filterdTodoList.value) {
 			case 'active': {
 				return todoList.filter((item) => !item.isDone);
 			}
@@ -53,6 +41,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 	const handleAddTodo = () => {
 		if (todoInput.value.length < 3) {
+			// eslint-disable-next-line no-alert
 			alert('Please enter a todo with at least 3 characters!');
 			return;
 		}
@@ -102,6 +91,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 		const isAnyTodoCompleted = todoList.some((item) => item.isDone);
 
 		if (!isAnyTodoCompleted) {
+			// eslint-disable-next-line no-alert
 			alert('There are no completed todos yet!');
 			return;
 		}
@@ -113,13 +103,11 @@ const todoStoreFn = defineStore('todoStore', () => {
 		$syncStorage();
 	};
 
-	const handleTodosFilter = (filter: typeof todoListfilter.value) => setTodoListfilter(filter);
-
 	return {
 		todoStore,
 		todoInput,
 		totalIncompleteTodos,
-		todoListfilter,
+		filterdTodoList,
 		filteredTodosList,
 
 		actions: () => ({
@@ -127,7 +115,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 			handleDeleteTodo,
 			handleDoneTodo,
 			handleClearCompleteTodos,
-			handleTodosFilter,
+			setTodoListFilter,
 		}),
 	};
 });

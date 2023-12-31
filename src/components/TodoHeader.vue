@@ -18,7 +18,7 @@ const { toggleTheme } = useThemeActions();
 				alt=""
 			/>
 
-			<button @click="toggleTheme">
+			<button type="button" @click="toggleTheme">
 				<img
 					:src="isDarkMode ? sunIcon : moonIcon"
 					class="aspect-square w-[2rem] md:w-[2.6rem]"
