@@ -6,6 +6,7 @@ import { getThemeOnLoad } from './utils/get-theme-on-load';
 
 document.documentElement.dataset.theme = getThemeOnLoad();
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 const app = createApp(App);
 
 app.use(createPinia());

@@ -20,7 +20,7 @@ const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 			@input="handleDoneTodo(todoItem.id)"
 		/>
 
-		<label :for="todoCheckBoxId" :class="[todoItem.isDone && 'text-secondary line-through']">
+		<label :for="todoCheckBoxId" :class="{ 'text-secondary line-through': todoItem.isDone }">
 			{{ todoItem.todoInputValue }}
 		</label>
 
@@ -33,3 +33,38 @@ const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 		</button>
 	</li>
 </template>
+
+<style scoped>
+input[type='checkbox'].custom-checkbox {
+	appearance: none;
+	margin: 0;
+}
+
+.custom-checkbox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background-image: url('/src/assets/circle.svg');
+	background-size: contain;
+}
+
+.custom-checkbox:hover {
+	background-image: url('/src/assets/circle-hover.svg');
+}
+
+.custom-checkbox::before {
+	content: '';
+	background-image: url('/src/assets/tick-icon.svg');
+	background-size: contain;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	transform: scale(0);
+	transition: 150ms transform ease-in-out;
+}
+
+.custom-checkbox:checked::before {
+	transform: scale(1);
+}
+</style>

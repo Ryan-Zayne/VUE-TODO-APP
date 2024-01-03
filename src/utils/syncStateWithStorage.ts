@@ -44,4 +44,6 @@ function syncStateWithStorage(...params: SyncStorageParams): void {
 	}
 }
 
+syncStateWithStorage('sdsdd', { state: 'hello', age: 11 }, ['age']);
+
 export { syncStateWithStorage };

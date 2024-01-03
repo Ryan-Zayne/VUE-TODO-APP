@@ -2,17 +2,17 @@ import { useState } from '@/composables/useState';
 import { syncStateWithStorage } from '@/utils/syncStateWithStorage';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { TODO_STORAGE_KEY, defaultTodoState, initialStoredState } from './todoStore.utils';
+import { TODO_STORAGE_KEY, initialTodoState } from './todoStore.utils';
 
 const todoStoreFn = defineStore('todoStore', () => {
 	const [todoInput, setTodoInput] = useState('', { needsDoubleBinding: true });
-	const [todoStore, setTodoStore] = useState(initialStoredState ?? defaultTodoState);
-	const [filterdTodoList, setTodoListFilter] = useState<'all' | 'active' | 'completed'>('all');
+	const [todoStore, setTodoStore] = useState(initialTodoState);
+	const [todoListFilter, setTodoListFilter] = useState<'all' | 'active' | 'completed'>('all');
 
 	const filteredTodosList = computed(() => {
 		const { todoList } = todoStore.value;
 
-		switch (filterdTodoList.value) {
+		switch (todoListFilter.value) {
 			case 'active': {
 				return todoList.filter((item) => !item.isDone);
 			}
@@ -35,7 +35,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 		return todoList.length - completedTodos.length;
 	});
 
-	const $syncStorage = () => {
+	const $activateStorageSync = () => {
 		syncStateWithStorage(TODO_STORAGE_KEY, todoStore.value, ['todoList']);
 	};
 
@@ -56,7 +56,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 		setTodoInput('');
 
-		$syncStorage();
+		$activateStorageSync();
 	};
 
 	const handleDeleteTodo = (id: string) => {
@@ -66,7 +66,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 		setTodoStore({ todoList: updatedTodoList });
 
-		$syncStorage();
+		$activateStorageSync();
 	};
 
 	const handleDoneTodo = (id: string) => {
@@ -82,7 +82,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 		setTodoStore({ todoList: updatedTodoList });
 
-		$syncStorage();
+		$activateStorageSync();
 	};
 
 	const handleClearCompleteTodos = () => {
@@ -100,14 +100,14 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 		setTodoStore({ todoList: updatedTodoList });
 
-		$syncStorage();
+		$activateStorageSync();
 	};
 
 	return {
 		todoStore,
 		todoInput,
 		totalIncompleteTodos,
-		filterdTodoList,
+		todoListFilter,
 		filteredTodosList,
 
 		actions: () => ({

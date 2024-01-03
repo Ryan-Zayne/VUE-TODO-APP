@@ -14,20 +14,16 @@ export type PartialStateValue<TValue> = TValue extends Record<string, unknown>
 export type ReadonlyState<TValue> = Readonly<Ref<DeepReadonly<UnwrapRef<TValue>>>>;
 export type WritableState<TValue> = Ref<UnwrapRef<TValue>>;
 
-export type UseStateReturnType<TState> = TState extends ReadonlyState<infer TValue>
+/* eslint-disable @typescript-eslint/unified-signatures */
+
+export type UseStateReturnType<TStateVariant> = TStateVariant extends
+	| ReadonlyState<infer TValue>
+	| WritableState<infer TValue>
 	? [
-			TState,
+			TStateVariant,
 			{
 				(newState: PartialStateValue<TValue>): void;
 				(newState: (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>): void;
 			},
 		]
-	: TState extends WritableState<infer TValue>
-		? [
-				TState,
-				{
-					(newState: PartialStateValue<TValue>): void;
-					(newState: (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>): void;
-				},
-			]
-		: never;
+	: never;

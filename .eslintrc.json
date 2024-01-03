@@ -9,6 +9,8 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:vue/vue3-recommended",
+		"plugin:@typescript-eslint/strict-type-checked",
+		"plugin:@typescript-eslint/stylistic-type-checked",
 		"@vue/eslint-config-airbnb-with-typescript",
 		"@vue/eslint-config-typescript",
 		"plugin:tailwindcss/recommended",
@@ -19,9 +21,13 @@
 
 	"plugins": ["tailwindcss", "unicorn"],
 
+	"parser": "vue-eslint-parser",
+
 	"parserOptions": {
+		"parser": "@typescript-eslint/parser",
 		"ecmaVersion": "latest",
-		"sourceType": "module"
+		"sourceType": "module",
+		"project": "./tsconfig.app.json"
 	},
 
 	"rules": {
@@ -44,6 +50,24 @@
 		"no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
 		"no-unused-expressions": "off",
 		"no-return-await": "off",
+
+		// Typescript Eslint Rules
+		"@typescript-eslint/no-unused-expressions": [
+			"error",
+			{
+				"allowShortCircuit": true,
+				"allowTernary": true
+			}
+		],
+		"@typescript-eslint/no-unused-vars": "warn",
+		"@typescript-eslint/array-type": ["error", { "default": "array-simple" }],
+		"@typescript-eslint/consistent-type-definitions": ["error", "type"],
+		"@typescript-eslint/return-await": "error",
+		"@typescript-eslint/no-useless-constructor": "error",
+		"@typescript-eslint/member-ordering": "error",
+		"@typescript-eslint/no-confusing-void-expression": "off",
+		"@typescript-eslint/non-nullable-type-assertion-style": "off",
+		"@typescript-eslint/unified-signatures": ["error", { "ignoreDifferentlyNamedParameters": true }],
 
 		// Vue Rules
 		"vue/attribute-hyphenation": ["error", "never"],

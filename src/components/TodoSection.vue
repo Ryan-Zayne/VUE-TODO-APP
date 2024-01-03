@@ -2,7 +2,7 @@
 import { useMediaQueryStore } from '@/store/useMediaQueryStore';
 import { useTodoActions, useTodoStore } from '@/store/useTodoStore';
 
-const { todoInput, todoStore, totalIncompleteTodos, filterdTodoList } = useTodoStore();
+const { todoInput, todoStore, totalIncompleteTodos, todoListFilter, filteredTodosList } = useTodoStore();
 
 const { handleAddTodo, handleClearCompleteTodos, setTodoListFilter } = useTodoActions();
 
@@ -43,7 +43,7 @@ const { isMobile } = useMediaQueryStore();
 					'[&_>_li:last-child]:[border-top:2px_solid_var(--border-primary)]',
 			]"
 		>
-			<slot />
+			<TodoListItem v-for="todoItem in filteredTodosList" :key="todoItem.id" :todoItem="todoItem" />
 
 			<li
 				v-if="isMobile"
@@ -74,7 +74,7 @@ const { isMobile } = useMediaQueryStore();
 
 			<button
 				type="button"
-				:data-selected="filterdTodoList === 'all'"
+				:data-selected="todoListFilter === 'all'"
 				class="hover:text-primary [&[data-selected=true]]:text-[--text-blue]"
 				@click="setTodoListFilter('all')"
 			>
@@ -83,7 +83,7 @@ const { isMobile } = useMediaQueryStore();
 
 			<button
 				type="button"
-				:data-selected="filterdTodoList === 'active'"
+				:data-selected="todoListFilter === 'active'"
 				class="hover:text-primary [&[data-selected=true]]:text-[--text-blue]"
 				@click="setTodoListFilter('active')"
 			>
@@ -92,7 +92,7 @@ const { isMobile } = useMediaQueryStore();
 
 			<button
 				type="button"
-				:data-selected="filterdTodoList === 'completed'"
+				:data-selected="todoListFilter === 'completed'"
 				class="hover:text-primary [&[data-selected=true]]:text-[--text-blue]"
 				@click="setTodoListFilter('completed')"
 			>

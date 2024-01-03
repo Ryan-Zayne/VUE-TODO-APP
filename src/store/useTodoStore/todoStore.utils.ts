@@ -3,9 +3,11 @@ import type { TodoStoreType } from './todoStore.types';
 
 export const TODO_STORAGE_KEY = 'todoState';
 
-export const defaultTodoState: TodoStoreType = {
+const defaultTodoState: TodoStoreType = {
 	todoList: [],
 	isEditMode: false,
 };
 
-export const initialStoredState = parseJSON<TodoStoreType>(localStorage.getItem(TODO_STORAGE_KEY));
+const initialStoredState = parseJSON<TodoStoreType>(localStorage.getItem(TODO_STORAGE_KEY));
+
+export const initialTodoState = initialStoredState ?? defaultTodoState;

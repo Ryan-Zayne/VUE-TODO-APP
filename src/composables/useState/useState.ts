@@ -31,32 +31,32 @@ function useState<TValue>(initialState: TValue, options: UseStateOptions = {}) {
 
 	const state = isDeeplyReactive
 		? ref(initialState)
-		: (shallowRef(initialState) as WritableState<TValue>);
+		: (shallowRef(initialState) as ReturnType<typeof ref<TValue>>);
 
 	function setState(newState: PartialStateValue<TValue>): void;
-	function setState(newState: (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>): void;
+	function setState(newStateFn: (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>): void;
 
 	// setState Overload Implementation
-	function setState(newValue: unknown) {
-		if (typeof newValue === 'function' && isObject(state.value) && isObject(newValue(state.value))) {
-			state.value = { ...state.value, ...newValue(state.value) };
+	function setState(newState: unknown) {
+		if (typeof newState === 'function' && isObject(newState(state.value)) && isObject(state.value)) {
+			state.value = { ...state.value, ...newState(state.value) } as FullStateValue<TValue>;
 			return;
 		}
 
-		if (typeof newValue === 'function') {
-			state.value = newValue(state.value);
+		if (typeof newState === 'function') {
+			state.value = newState(state.value) as FullStateValue<TValue>;
 			return;
 		}
 
-		if (isObject(newValue) && isObject(state.value)) {
-			state.value = { ...state.value, ...newValue };
+		if (isObject(newState) && isObject(state.value)) {
+			state.value = { ...state.value, ...newState } as FullStateValue<TValue>;
 			return;
 		}
 
-		state.value = newValue as FullStateValue<TValue>;
+		state.value = newState as FullStateValue<TValue>;
 	}
 
-	return [needsDoubleBinding ? state : readonly(state), setState];
+	return needsDoubleBinding ? state : [readonly(state), setState];
 }
 
 export { useState };

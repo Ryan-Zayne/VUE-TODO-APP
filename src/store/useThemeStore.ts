@@ -3,7 +3,7 @@ import { syncStateWithStorage } from '@/utils/syncStateWithStorage';
 import { defineStore, storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
-const themeStoreFn = defineStore('theme', () => {
+const themeStoreFn = defineStore('themeStore', () => {
 	const [theme, setTheme] = useState(document.documentElement.dataset.theme);
 	const isDarkMode = computed(() => theme.value === 'dark');
 
