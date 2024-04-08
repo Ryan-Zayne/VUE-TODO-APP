@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { useMediaQueryStore } from '@/store/useMediaQueryStore';
-import { useTodoActions, useTodoStore } from '@/store/useTodoStore';
+import { useMediaQueryStore } from "@/store/useMediaQueryStore";
+import { useTodoActions, useTodoStore } from "@/store/useTodoStore";
+import TodoListItem from "./TodoListItem.vue";
 
 const { todoInput, todoStore, totalIncompleteTodos, todoListFilter, filteredTodosList } = useTodoStore();
 
@@ -51,7 +52,7 @@ const { isMobile } = useMediaQueryStore();
 			>
 				<p>
 					{{ totalIncompleteTodos }}
-					{{ totalIncompleteTodos === 1 ? 'item' : 'items' }} left
+					{{ totalIncompleteTodos === 1 ? "item" : "items" }} left
 				</p>
 
 				<button
@@ -69,7 +70,7 @@ const { isMobile } = useMediaQueryStore();
 		>
 			<p v-if="!isMobile" class="mr-auto min-w-[8rem] text-secondary">
 				{{ totalIncompleteTodos }}
-				{{ totalIncompleteTodos === 1 ? 'item' : 'items' }} left
+				{{ totalIncompleteTodos === 1 ? "item" : "items" }} left
 			</p>
 
 			<button

@@ -1,5 +1,5 @@
-import { isObject } from '@/utils/typeof';
-import { readonly, ref, shallowRef } from 'vue';
+import { isFunction, isObject } from "@/utils/typeof";
+import { readonly, ref, shallowRef } from "vue";
 import type {
 	DefaultOptions,
 	FullStateValue,
@@ -8,55 +8,49 @@ import type {
 	UseStateOptions,
 	UseStateReturnType,
 	WritableState,
-} from './state.types';
+} from "./state.types";
 
-function useState<TValue>(
-	initialState: TValue,
-	options?: DefaultOptions
-): UseStateReturnType<ReadonlyState<TValue>>;
+type UseState = {
+	<TValue>(initialState: TValue, options?: DefaultOptions): UseStateReturnType<ReadonlyState<TValue>>;
 
-function useState<TValue>(
-	initialState: TValue,
-	options: UseStateOptions<false, true>
-): UseStateReturnType<ReadonlyState<TValue>>;
+	<TValue>(
+		initialState: TValue,
+		options: UseStateOptions<false, true>
+	): UseStateReturnType<ReadonlyState<TValue>>;
 
-function useState<TValue>(
-	initialState: TValue,
-	options: UseStateOptions<true, false>
-): UseStateReturnType<WritableState<TValue>>;
+	<TValue>(
+		initialState: TValue,
+		options: UseStateOptions<true, false>
+	): UseStateReturnType<WritableState<TValue>>;
+};
 
-// useState Overload Implementation
-function useState<TValue>(initialState: TValue, options: UseStateOptions = {}) {
-	const { needsDoubleBinding = false, isDeeplyReactive = false } = options;
+const useState = (<TValue>(initialState: TValue, options: UseStateOptions = {}) => {
+	type NewStateFn = (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>;
+
+	const { needsDoubleBinding = false, isDeeplyReactive = false, shouldReplace = false } = options;
 
 	const state = isDeeplyReactive
 		? ref(initialState)
 		: (shallowRef(initialState) as ReturnType<typeof ref<TValue>>);
 
 	function setState(newState: PartialStateValue<TValue>): void;
-	function setState(newStateFn: (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>): void;
+	function setState(newStateFn: NewStateFn): void;
 
 	// setState Overload Implementation
 	function setState(newState: unknown) {
-		if (typeof newState === 'function' && isObject(newState(state.value)) && isObject(state.value)) {
-			state.value = { ...state.value, ...newState(state.value) } as FullStateValue<TValue>;
-			return;
-		}
+		const nextState = isFunction<NewStateFn>(newState)
+			? newState(state.value as FullStateValue<TValue>)
+			: newState;
 
-		if (typeof newState === 'function') {
-			state.value = newState(state.value) as FullStateValue<TValue>;
-			return;
-		}
+		if (Object.is(state.value, nextState)) return;
 
-		if (isObject(newState) && isObject(state.value)) {
-			state.value = { ...state.value, ...newState } as FullStateValue<TValue>;
-			return;
-		}
-
-		state.value = newState as FullStateValue<TValue>;
+		state.value =
+			!shouldReplace && isObject(state.value) && isObject(nextState)
+				? { ...state.value, ...nextState }
+				: (nextState as FullStateValue<TValue>);
 	}
 
-	return needsDoubleBinding ? state : [readonly(state), setState];
-}
+	return needsDoubleBinding ? [state, setState] : [readonly(state), setState];
+}) satisfies UseState as UseState;
 
 export { useState };

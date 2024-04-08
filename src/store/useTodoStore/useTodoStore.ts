@@ -1,23 +1,23 @@
-import { useState } from '@/composables/useState';
-import { syncStateWithStorage } from '@/utils/syncStateWithStorage';
-import { defineStore, storeToRefs } from 'pinia';
-import { computed } from 'vue';
-import { TODO_STORAGE_KEY, initialTodoState } from './todoStore.utils';
+import { useState } from "@/composables/useState";
+import { syncStateWithStorage } from "@/utils/syncStateWithStorage";
+import { defineStore, storeToRefs } from "pinia";
+import { computed } from "vue";
+import { TODO_STORAGE_KEY, initialTodoState } from "./todoStore.utils";
 
-const todoStoreFn = defineStore('todoStore', () => {
-	const [todoInput, setTodoInput] = useState('', { needsDoubleBinding: true });
+const todoStoreFn = defineStore("todoStore", () => {
+	const [todoInput, setTodoInput] = useState("", { needsDoubleBinding: true });
 	const [todoStore, setTodoStore] = useState(initialTodoState);
-	const [todoListFilter, setTodoListFilter] = useState<'all' | 'active' | 'completed'>('all');
+	const [todoListFilter, setTodoListFilter] = useState<"all" | "active" | "completed">("all");
 
 	const filteredTodosList = computed(() => {
 		const { todoList } = todoStore.value;
 
 		switch (todoListFilter.value) {
-			case 'active': {
+			case "active": {
 				return todoList.filter((item) => !item.isDone);
 			}
 
-			case 'completed': {
+			case "completed": {
 				return todoList.filter((item) => item.isDone);
 			}
 
@@ -36,13 +36,13 @@ const todoStoreFn = defineStore('todoStore', () => {
 	});
 
 	const $activateStorageSync = () => {
-		syncStateWithStorage(TODO_STORAGE_KEY, todoStore.value, ['todoList']);
+		syncStateWithStorage(TODO_STORAGE_KEY, todoStore.value, ["todoList"]);
 	};
 
 	const handleAddTodo = () => {
 		if (todoInput.value.length < 3) {
 			// eslint-disable-next-line no-alert
-			alert('Please enter a todo with at least 3 characters!');
+			alert("Please enter a todo with at least 3 characters!");
 			return;
 		}
 
@@ -54,7 +54,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 		setTodoStore((prevState) => ({ todoList: [...prevState.todoList, newTodoItem] }));
 
-		setTodoInput('');
+		setTodoInput("");
 
 		$activateStorageSync();
 	};
@@ -92,7 +92,7 @@ const todoStoreFn = defineStore('todoStore', () => {
 
 		if (!isAnyTodoCompleted) {
 			// eslint-disable-next-line no-alert
-			alert('There are no completed todos yet!');
+			alert("There are no completed todos yet!");
 			return;
 		}
 
