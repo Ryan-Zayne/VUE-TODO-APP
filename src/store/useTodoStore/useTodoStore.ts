@@ -5,7 +5,7 @@ import { computed } from "vue";
 import { TODO_STORAGE_KEY, initialTodoState } from "./todoStore.utils";
 
 const todoStoreFn = defineStore("todoStore", () => {
-	const [todoInput, setTodoInput] = useState("", { needsDoubleBinding: true });
+	const [todoInput, setTodoInput] = useState("", { allowDoubleBind: true });
 	const [todoStore, setTodoStore] = useState(initialTodoState);
 	const [todoListFilter, setTodoListFilter] = useState<"all" | "active" | "completed">("all");
 
@@ -120,6 +120,4 @@ const todoStoreFn = defineStore("todoStore", () => {
 	};
 });
 
-export const useTodoStore = () => storeToRefs(todoStoreFn());
-
-export const useTodoActions = () => todoStoreFn().actions();
+export const useTodoStore = () => ({ ...storeToRefs(todoStoreFn()), actions: todoStoreFn().actions() });

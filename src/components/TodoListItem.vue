@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useTodoActions, type TodoStoreType } from '@/store/useTodoStore';
+import { useTodoStore, type TodoStoreType } from "@/store/useTodoStore";
 
-const props = defineProps<{ todoItem: TodoStoreType['todoList'][number] }>();
+const props = defineProps<{ todoItem: TodoStoreType["todoList"][number] }>();
 
-const { handleDeleteTodo, handleDoneTodo } = useTodoActions();
+const { handleDeleteTodo, handleDoneTodo } = useTodoStore().actions;
 
 const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 </script>
@@ -35,7 +35,7 @@ const todoCheckBoxId = `checkbox-${props.todoItem.id}`;
 </template>
 
 <style scoped>
-input[type='checkbox'].custom-checkbox {
+input[type="checkbox"].custom-checkbox {
 	appearance: none;
 	margin: 0;
 }
@@ -46,17 +46,17 @@ input[type='checkbox'].custom-checkbox {
 	align-items: center;
 	aspect-ratio: 1;
 	border-radius: 50%;
-	background-image: url('/src/assets/circle.svg');
+	background-image: url("/src/assets/circle.svg");
 	background-size: contain;
 }
 
 .custom-checkbox:hover {
-	background-image: url('/src/assets/circle-hover.svg');
+	background-image: url("/src/assets/circle-hover.svg");
 }
 
 .custom-checkbox::before {
-	content: '';
-	background-image: url('/src/assets/tick-icon.svg');
+	content: "";
+	background-image: url("/src/assets/tick-icon.svg");
 	background-size: contain;
 	aspect-ratio: 1;
 	border-radius: 50%;

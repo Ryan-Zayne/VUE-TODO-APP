@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { useMediaQueryStore } from "@/store/useMediaQueryStore";
-import { useTodoActions, useTodoStore } from "@/store/useTodoStore";
+import { useTodoStore } from "@/store/useTodoStore";
 import TodoListItem from "./TodoListItem.vue";
 
-const { todoInput, todoStore, totalIncompleteTodos, todoListFilter, filteredTodosList } = useTodoStore();
-
-const { handleAddTodo, handleClearCompleteTodos, setTodoListFilter } = useTodoActions();
+const {
+	todoInput,
+	todoStore,
+	totalIncompleteTodos,
+	todoListFilter,
+	filteredTodosList,
+	actions: { handleAddTodo, handleClearCompleteTodos, setTodoListFilter },
+} = useTodoStore();
 
 const { isMobile } = useMediaQueryStore();
 </script>

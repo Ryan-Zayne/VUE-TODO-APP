@@ -24,21 +24,19 @@ type UseState = {
 	): UseStateReturnType<WritableState<TValue>>;
 };
 
-const useState = (<TValue>(initialState: TValue, options: UseStateOptions = {}) => {
-	type NewStateFn = (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>;
+type NewStateFn<TValue> = (prevState: FullStateValue<TValue>) => PartialStateValue<TValue>;
 
-	const { needsDoubleBinding = false, isDeeplyReactive = false, shouldReplace = false } = options;
+type SetState<TValue> = (newState: PartialStateValue<TValue> | NewStateFn<TValue>) => void;
 
-	const state = isDeeplyReactive
-		? ref(initialState)
-		: (shallowRef(initialState) as ReturnType<typeof ref<TValue>>);
+const useState: UseState = <TValue>(initialState: TValue, options: UseStateOptions = {}) => {
+	const { allowDoubleBind = false, deep = false, shouldReplace = false } = options;
 
-	function setState(newState: PartialStateValue<TValue>): void;
-	function setState(newStateFn: NewStateFn): void;
+	const state = !deep
+		? (shallowRef(initialState) as ReturnType<typeof ref<TValue>>)
+		: ref(initialState);
 
-	// setState Overload Implementation
-	function setState(newState: unknown) {
-		const nextState = isFunction<NewStateFn>(newState)
+	const setState: SetState<TValue> = (newState) => {
+		const nextState = isFunction<NewStateFn<TValue>>(newState)
 			? newState(state.value as FullStateValue<TValue>)
 			: newState;
 
@@ -48,9 +46,9 @@ const useState = (<TValue>(initialState: TValue, options: UseStateOptions = {}) 
 			!shouldReplace && isObject(state.value) && isObject(nextState)
 				? { ...state.value, ...nextState }
 				: (nextState as FullStateValue<TValue>);
-	}
+	};
 
-	return needsDoubleBinding ? [state, setState] : [readonly(state), setState];
-}) satisfies UseState as UseState;
+	return !allowDoubleBind ? [readonly(state), setState] : [state, setState];
+};
 
 export { useState };

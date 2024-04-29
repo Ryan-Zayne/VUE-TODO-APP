@@ -11,7 +11,6 @@
 		"plugin:vue/vue3-recommended",
 		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
-		"@vue/eslint-config-airbnb-with-typescript",
 		"@vue/eslint-config-typescript",
 		"plugin:tailwindcss/recommended",
 		"plugin:sonarjs/recommended",
@@ -72,22 +71,6 @@
 		// Vue Rules
 		"vue/attribute-hyphenation": ["error", "never"],
 		"vue/v-on-event-hyphenation": ["error", "never"],
-
-		// Vue Airbnb Rules
-		"import/no-extraneous-dependencies": [
-			"error",
-			{
-				"devDependencies": true
-			}
-		],
-		"import/prefer-default-export": "off",
-		"import/no-cycle": [
-			"error",
-			{
-				"ignoreExternal": true,
-				"maxDepth": 3
-			}
-		],
 
 		// Unicorn Rules
 		"unicorn/no-null": "off",

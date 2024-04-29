@@ -1,8 +1,8 @@
 import type { DeepReadonly, Ref, UnwrapRef } from "vue";
 
 export type UseStateOptions<TisDoubleBound = boolean, TisDeepReactive = boolean> = {
-	needsDoubleBinding?: TisDoubleBound;
-	isDeeplyReactive?: TisDeepReactive;
+	allowDoubleBind?: TisDoubleBound;
+	deep?: TisDeepReactive;
 	shouldReplace?: boolean;
 };
 export type DefaultOptions = UseStateOptions<false, false>;
