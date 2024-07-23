@@ -8,7 +8,7 @@ const {
 	todoStore,
 	totalIncompleteTodos,
 	todoListFilter,
-	filteredTodosList,
+	filteredTodoList,
 	actions: { handleAddTodo, handleClearCompleteTodos, setTodoListFilter },
 } = useTodoStore();
 
@@ -40,16 +40,15 @@ const { isMobile } = useMediaQueryStore();
 
 		<ul
 			:class="[
-				`flex min-h-[31rem] w-full flex-col rounded-[6px] bg-main-theme text-primary
-				[box-shadow:0px_3px_50px_0px_var(--shadow)]
-				[&_>_li:not(:last-child)]:[border-bottom:2px_solid_var(--border-primary)]
-				`,
+				`flex min-h-[31rem] w-full flex-col rounded-[6px] bg-main-theme text-primary [box-shadow:0px_3px_50px_0px_var(--shadow)] [&_>_li:not(:last-child)]:[border-bottom:2px_solid_var(--border-primary)]`,
 
-				todoStore.todoList.length <= 3 &&
+				todoStore().todoList.length <= 3 &&
 					'[&_>_li:last-child]:[border-top:2px_solid_var(--border-primary)]',
 			]"
 		>
-			<TodoListItem v-for="todoItem in filteredTodosList" :key="todoItem.id" :todoItem="todoItem" />
+			<template v-for="todoItem in filteredTodoList" :key="todoItem.id">
+				<TodoListItem :todoItem="todoItem" />
+			</template>
 
 			<li
 				v-if="isMobile"

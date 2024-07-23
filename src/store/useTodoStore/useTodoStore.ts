@@ -1,16 +1,16 @@
-import { useState } from "@/composables/useState";
+import { useSignal, useState } from "@/composables";
 import { syncStateWithStorage } from "@/utils/syncStateWithStorage";
 import { defineStore, storeToRefs } from "pinia";
 import { computed } from "vue";
 import { TODO_STORAGE_KEY, initialTodoState } from "./todoStore.utils";
 
 const todoStoreFn = defineStore("todoStore", () => {
-	const [todoInput, setTodoInput] = useState("", { allowDoubleBind: true });
-	const [todoStore, setTodoStore] = useState(initialTodoState);
+	const [todoInput, setTodoInput] = useState("", { writable: true });
+	const [todoStore, setTodoStore] = useSignal(initialTodoState);
 	const [todoListFilter, setTodoListFilter] = useState<"all" | "active" | "completed">("all");
 
-	const filteredTodosList = computed(() => {
-		const { todoList } = todoStore.value;
+	const filteredTodoList = computed(() => {
+		const { todoList } = todoStore();
 
 		switch (todoListFilter.value) {
 			case "active": {
@@ -28,7 +28,7 @@ const todoStoreFn = defineStore("todoStore", () => {
 	});
 
 	const totalIncompleteTodos = computed(() => {
-		const { todoList } = todoStore.value;
+		const { todoList } = todoStore();
 
 		const completedTodos = todoList.filter((item) => item.isDone);
 
@@ -36,7 +36,7 @@ const todoStoreFn = defineStore("todoStore", () => {
 	});
 
 	const $activateStorageSync = () => {
-		syncStateWithStorage(TODO_STORAGE_KEY, todoStore.value, ["todoList"]);
+		syncStateWithStorage(TODO_STORAGE_KEY, todoStore(), ["todoList"]);
 	};
 
 	const handleAddTodo = () => {
@@ -60,7 +60,7 @@ const todoStoreFn = defineStore("todoStore", () => {
 	};
 
 	const handleDeleteTodo = (id: string) => {
-		const { todoList } = todoStore.value;
+		const { todoList } = todoStore();
 
 		const updatedTodoList = todoList.filter((item) => item.id !== id);
 
@@ -70,14 +70,14 @@ const todoStoreFn = defineStore("todoStore", () => {
 	};
 
 	const handleDoneTodo = (id: string) => {
-		const { todoList } = todoStore.value;
+		const { todoList } = todoStore();
 
-		const updatedTodoList = todoList.map((todoiItem) => {
-			if (todoiItem.id === id) {
-				return { ...todoiItem, isDone: !todoiItem.isDone };
+		const updatedTodoList = todoList.map((todoItem) => {
+			if (todoItem.id === id) {
+				return { ...todoItem, isDone: !todoItem.isDone };
 			}
 
-			return todoiItem;
+			return todoItem;
 		});
 
 		setTodoStore({ todoList: updatedTodoList });
@@ -86,7 +86,7 @@ const todoStoreFn = defineStore("todoStore", () => {
 	};
 
 	const handleClearCompleteTodos = () => {
-		const { todoList } = todoStore.value;
+		const { todoList } = todoStore();
 
 		const isAnyTodoCompleted = todoList.some((item) => item.isDone);
 
@@ -108,7 +108,7 @@ const todoStoreFn = defineStore("todoStore", () => {
 		todoInput,
 		totalIncompleteTodos,
 		todoListFilter,
-		filteredTodosList,
+		filteredTodoList,
 
 		actions: () => ({
 			handleAddTodo,
@@ -120,4 +120,8 @@ const todoStoreFn = defineStore("todoStore", () => {
 	};
 });
 
-export const useTodoStore = () => ({ ...storeToRefs(todoStoreFn()), actions: todoStoreFn().actions() });
+export const useTodoStore = () => ({
+	...storeToRefs(todoStoreFn()),
+	todoStore: todoStoreFn().todoStore,
+	actions: todoStoreFn().actions(),
+});
